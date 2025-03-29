@@ -69,7 +69,8 @@ def main():
 
     try:
         logging.info("Starting email bot with log level: %s", args.log_level)
-        logging.info("GMAIL_TOKEN_JSON: %s", os.environ["GMAIL_TOKEN_JSON"])
+        logging.info("GMAIL_TOKEN_JSON: %s",
+                     os.environ.get("GMAIL_TOKEN_JSON"))
         bot = EmailBot()
         bot.process_emails()
         logging.info("Email processing complete")
