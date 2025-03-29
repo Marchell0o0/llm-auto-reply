@@ -69,9 +69,6 @@ def main():
 
     try:
         logging.info("Starting email bot with log level: %s", args.log_level)
-        logging.info("Environment variables:")
-        for name, value in os.environ.items():
-            logging.info("{0}".format(name))
         bot = EmailBot()
         bot.process_emails()
         logging.info("Email processing complete")
