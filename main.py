@@ -69,8 +69,8 @@ def main():
 
     try:
         logging.info("Starting email bot with log level: %s", args.log_level)
-        bot = EmailBot()
         logging.info("GMAIL_TOKEN_JSON: %s", os.environ["GMAIL_TOKEN_JSON"])
+        bot = EmailBot()
         bot.process_emails()
         logging.info("Email processing complete")
     except Exception as e:
