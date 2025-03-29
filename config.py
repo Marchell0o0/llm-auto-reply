@@ -216,7 +216,7 @@ EMAIL_TEMPLATE = '''<!DOCTYPE html>
   <body style="margin: 0; padding: 0; background-color: #222222 !important; font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color-scheme: light only; -webkit-font-smoothing: antialiased;">
     <div style="width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
       <!-- Main Container -->
-      <div style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <div style="background-color: #ffffff; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <!-- Header -->
         <div style="padding: 30px 0; border-bottom: 3px solid #ffd301; background-color: #222222; text-align: center;">
           <img
