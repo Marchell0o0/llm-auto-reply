@@ -18,18 +18,10 @@ from config import SYSTEM_PROMPT, EMAIL_TEMPLATE
 class EmailBot:
     """Main email bot that processes and responds to emails."""
 
-    def __init__(self, log_level=logging.INFO):
+    def __init__(self):
         """
         Initialize the email bot components.
-
-        Args:
-            log_level: Logging level, defaults to INFO. Use logging.DEBUG for verbose output.
-                       If None, skip logging setup (for when it's configured externally).
         """
-        # Configure logging if log_level is provided
-        if log_level is not None:
-            self._setup_logging(log_level)
-
         try:
             # Set up Gmail service
             logging.info("Initializing Gmail service")
@@ -59,42 +51,6 @@ class EmailBot:
         except Exception as e:
             logging.error(f"Failed to initialize email bot: {str(e)}")
             raise
-
-    def _setup_logging(self, log_level):
-        """Set up logging configuration with the specified level."""
-        # Create a logger for this class
-        logger = logging.getLogger()
-        logger.setLevel(log_level)
-
-        # Clear existing handlers to avoid duplicate logs
-        if logger.handlers:
-            for handler in logger.handlers:
-                logger.removeHandler(handler)
-
-        # Create console handler and set level
-        handler = logging.StreamHandler()
-        handler.setLevel(log_level)
-
-        # Create formatter
-        if log_level == logging.DEBUG:
-            formatter = logging.Formatter(
-                '%(asctime)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s')
-        else:
-            formatter = logging.Formatter(
-                '%(asctime)s - %(levelname)s - %(message)s')
-
-        # Add formatter to handler
-        handler.setFormatter(formatter)
-
-        # Add handler to logger
-        logger.addHandler(handler)
-
-        logging.debug("Logging initialized at level: %s",
-                      "DEBUG" if log_level == logging.DEBUG else
-                      "INFO" if log_level == logging.INFO else
-                      "WARNING" if log_level == logging.WARNING else
-                      "ERROR" if log_level == logging.ERROR else
-                      "CRITICAL")
 
     def process_emails(self):
         """Process unread emails in the inbox."""

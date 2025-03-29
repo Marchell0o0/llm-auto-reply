@@ -10,10 +10,6 @@ if os.path.exists(".env"):
     from dotenv import load_dotenv
     load_dotenv()
 
-logging.info("Environment variables:")
-for name, value in os.environ.items():
-    logging.info("{0}".format(name))
-
 
 def setup_logging(log_level):
     """Set up logging with a clean, minimal format."""
@@ -73,8 +69,10 @@ def main():
 
     try:
         logging.info("Starting email bot with log level: %s", args.log_level)
-        # Pass log_level=None to EmailBot to skip its internal logging setup
-        bot = EmailBot(log_level=None)
+        logging.info("Environment variables:")
+        for name, value in os.environ.items():
+            logging.info("{0}".format(name))
+        bot = EmailBot()
         bot.process_emails()
         logging.info("Email processing complete")
     except Exception as e:
