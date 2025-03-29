@@ -2,6 +2,7 @@
 
 import os
 import logging
+import re
 from openai import OpenAI
 
 
@@ -79,3 +80,78 @@ class DeepSeekLLM:
             logging.error(f"Error generating LLM response: {str(e)}", exc_info=logging.getLogger(
             ).level == logging.DEBUG)
             return f"Error: {str(e)}"
+
+    def parse_response(self, response_text):
+        """
+        Parse the structured response from the LLM.
+
+        Expected format:
+        <Type>: [answer, forward to human, ignore]
+        <Response>: [response content]
+        <Response email>: [email to send the response to]
+        <Reason>: [explanation]
+
+        Args:
+            response_text: The raw response from the LLM
+
+        Returns:
+            dict: Contains 'type', 'response', 'response_email', and 'reason' keys
+        """
+        try:
+            logging.debug("Parsing structured LLM response")
+
+            # Initialize default values
+            parsed = {
+                'type': 'forward to human',  # Default to human review if parsing fails
+                'response': '',
+                'response_email': '',  # New field for recipient email
+                'reason': 'Failed to parse LLM response'
+            }
+
+            # Extract type
+            type_match = re.search(r'<Type>:\s*(.*?)(?:\n|$)', response_text)
+            if type_match:
+                parsed['type'] = type_match.group(1).strip().lower()
+                logging.debug(f"Parsed type: {parsed['type']}")
+
+            # Extract response
+            response_match = re.search(
+                r'<Response>:\s*(.*?)(?=<Response email>|<Reason>|\Z)', response_text, re.DOTALL)
+            if response_match:
+                parsed['response'] = response_match.group(1).strip()
+                logging.debug(
+                    f"Response length: {len(parsed['response'])} characters")
+
+            # Extract response email
+            email_match = re.search(
+                r'<Response email>:\s*(.*?)(?=<Reason>|\Z)', response_text, re.DOTALL)
+            if email_match:
+                parsed['response_email'] = email_match.group(1).strip()
+                logging.debug(f"Response email: {parsed['response_email']}")
+
+            # Extract reason
+            reason_match = re.search(
+                r'<Reason>:\s*(.*?)(?=<|\Z)', response_text, re.DOTALL)
+            if reason_match:
+                parsed['reason'] = reason_match.group(1).strip()
+                logging.debug(f"Reason: {parsed['reason']}")
+
+            # Validate parsed type
+            valid_types = ['answer', 'forward to human', 'ignore']
+            if parsed['type'] not in valid_types:
+                logging.warning(
+                    f"Invalid response type: {parsed['type']}. Defaulting to 'forward to human'")
+                parsed['type'] = 'forward to human'
+                parsed['reason'] = f"Invalid response type: {parsed['type']}. {parsed['reason']}"
+
+            return parsed
+
+        except Exception as e:
+            logging.error(f"Error parsing LLM response: {str(e)}", exc_info=logging.getLogger(
+            ).level == logging.DEBUG)
+            return {
+                'type': 'forward to human',
+                'response': '',
+                'response_email': '',
+                'reason': f"Error parsing response: {str(e)}"
+            }

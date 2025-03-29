@@ -150,32 +150,73 @@ class EmailBot:
 
         # Extract email content
         email_content = self._extract_email_content(message['payload'])
-
+        email_content = f"From: {sender_email}\nSubject: {subject}\n{email_content}"
         # Log full email content in debug mode
         logging.debug(
             f"Full email content from {message_id}:\n{'='*50}\n{email_content}\n{'='*50}")
 
-        # TODO: Add logic to determine if the bot should answer or dismiss
-        # For now, always answer
-        should_answer = True
-
-        # If the bot decides not to answer, mark as dismissed and needs human attention
-        if not should_answer:
-            logging.info(f"Bot decided to dismiss message {message_id}")
-            self.label_manager.mark_as_bot_dismissed(message_id)
-            self.label_manager.mark_as_needs_human_attention(message_id)
-            logging.debug(f"Marked message {message_id} for human attention")
-            return
-
         # Generate AI response
         logging.info(f"Generating AI response for message {message_id}")
-        ai_response = self.llm.generate_response(email_content)
+        ai_response_text = self.llm.generate_response(email_content)
         logging.debug(
-            f"Generated AI response:\n{'='*50}\n{ai_response}\n{'='*50}")
+            f"Generated raw AI response:\n{'='*50}\n{ai_response_text}\n{'='*50}")
 
-        # Send the response
-        self._send_response(message_id, thread_id,
-                            sender_email, subject, headers, ai_response)
+        # Parse the structured response
+        parsed_response = self.llm.parse_response(ai_response_text)
+        logging.info(f"Response type: {parsed_response['type']}")
+        logging.debug(f"Response reason: {parsed_response['reason']}")
+
+        # Handle based on response type
+        if parsed_response['type'] == 'answer':
+            logging.info(f"Bot decided to answer message {message_id}")
+
+            # Determine which email to send the response to
+            recipient_email = sender_email  # Default to original sender
+            if parsed_response['response_email'] and parsed_response['response_email'].strip():
+                recipient_email = parsed_response['response_email'].strip()
+                logging.info(
+                    f"Using client-specified email from message: {recipient_email}")
+
+            # Send the response
+            self._send_response(
+                message_id,
+                thread_id,
+                recipient_email,  # Use the determined recipient email
+                subject,
+                headers,
+                parsed_response['response']
+            )
+
+        elif parsed_response['type'] == 'forward to human':
+            logging.info(
+                f"Bot decided to forward message {message_id} to human")
+            self.label_manager.mark_as_needs_human_attention(message_id)
+            # Add a note about why it was forwarded to human
+            if parsed_response['reason']:
+                logging.info(
+                    f"Reason for human review: {parsed_response['reason']}")
+            # Log if a different email was found
+            if parsed_response['response_email']:
+                logging.info(
+                    f"Client email found in message: {parsed_response['response_email']}")
+
+        elif parsed_response['type'] == 'ignore':
+            logging.info(f"Bot decided to ignore message {message_id}")
+            self.label_manager.mark_as_bot_dismissed(message_id)
+            # Log the reason for ignoring
+            if parsed_response['reason']:
+                logging.info(
+                    f"Reason for ignoring: {parsed_response['reason']}")
+            # Log if a different email was found
+            if parsed_response['response_email']:
+                logging.info(
+                    f"Client email found in message: {parsed_response['response_email']}")
+
+        else:
+            # This shouldn't happen due to validation in parse_response, but just in case
+            logging.warning(
+                f"Unknown response type: {parsed_response['type']}")
+            self.label_manager.mark_as_needs_human_attention(message_id)
 
     def _extract_email_content(self, payload):
         """Extract plain text content from the email payload."""
