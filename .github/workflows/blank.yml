@@ -8,6 +8,7 @@ on:
 jobs:
   check-emails:
     runs-on: ubuntu-latest
+    environment: "Email Bot"
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
