@@ -218,7 +218,7 @@ EMAIL_TEMPLATE = '''<!DOCTYPE html>
       <!-- Main Container -->
       <div style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <!-- Header -->
-        <div style="padding: 25px 0; border-bottom: 3px solid #ffd301; background-color: #222222; text-align: center;">
+        <div style="padding: 30px 0; border-bottom: 3px solid #ffd301; background-color: #222222; text-align: center;">
           <img
             src="https://drive.google.com/thumbnail?id=1V1955hJSdhcfdQivMUl20g7ACwOVns2E"
             alt="KrystenTrade Logo"
@@ -227,25 +227,51 @@ EMAIL_TEMPLATE = '''<!DOCTYPE html>
         </div>
 
         <!-- Content -->
-        <div style="padding: 25px 20px; color: #333333 !important; background-color: #ffffff;">
+        <div style="padding: 35px 30px; color: #333333 !important; background-color: #ffffff;">
           {CONTENT}
         </div>
 
         <!-- Footer -->
-        <div style="background-color: #222222; padding: 25px 20px; text-align: center;">
-          <p style="margin: 0 0 15px 0; color: #ffffff; font-size: 13px">
-            © 2024 KrystenTrade. Všechna práva vyhrazena.
-          </p>
-          <div style="font-size: 13px; line-height: 2">
-            <a href="tel:+420777629585" style="color: #ffd301; text-decoration: none; display: block">
-              +420 777 629 585
-            </a>
-            <a href="https://www.krystentrade.com" style="color: #ffd301; text-decoration: none; display: block">
-              www.krystentrade.com
-            </a>
-            <a href="mailto:info@krystentrade.com" style="color: #ffd301; text-decoration: none; display: block">
-              info@krystentrade.com
-            </a>
+        <div style="background-color: #222222; padding: 30px; border-top: 3px solid #ffd301;">
+          <!-- Contact Information -->
+          <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; margin-bottom: 20px;">
+              <!-- Left column - Contact details -->
+              <div style="width: 100%;">
+                <h3 style="color: #ffd301; font-size: 16px; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px;">Kontakt</h3>
+                
+                <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                  <div style="width: 5px; min-width: 5px; height: 1px; background-color: #ffd301; margin-right: 10px;"></div>
+                  <a href="tel:+420777629585" style="color: #ffffff; text-decoration: none; font-size: 14px;">
+                    +420 777 629 585
+                  </a>
+                </div>
+                
+                <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                  <div style="width: 5px; min-width: 5px; height: 1px; background-color: #ffd301; margin-right: 10px;"></div>
+                  <a href="https://www.krystentrade.com" style="color: #ffffff; text-decoration: none; font-size: 14px;">
+                    www.krystentrade.com
+                  </a>
+                </div>
+                
+                <div style="display: flex; align-items: center;">
+                  <div style="width: 5px; min-width: 5px; height: 1px; background-color: #ffd301; margin-right: 10px;"></div>
+                  <a href="mailto:info@krystentrade.com" style="color: #ffffff; text-decoration: none; font-size: 14px;">
+                    info@krystentrade.com
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div style="height: 1px; background-color: rgba(255,255,255,0.1); margin: 10px 0 20px;"></div>
+          
+          <!-- Copyright -->
+          <div style="text-align: center;">
+            <p style="color: rgba(255,255,255,0.7); font-size: 12px; margin: 0;">
+              © 2024 KrystenTrade. Všechna práva vyhrazena.
+            </p>
           </div>
         </div>
       </div>
