@@ -240,24 +240,21 @@ EMAIL_TEMPLATE = '''<!DOCTYPE html>
               <div style="width: 100%;">
                 <h3 style="color: #ffd301; font-size: 16px; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px;">Kontakt</h3>
                 
-                <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                  <div style="width: 5px; min-width: 5px; height: 1px; background-color: #ffd301; margin-right: 10px;"></div>
+                <div style="margin-bottom: 12px;">
                   <a href="tel:+420777629585" style="color: #ffffff; text-decoration: none; font-size: 14px;">
-                    +420 777 629 585
+                    <span style="color: #ffd301; margin-right: 10px;">-</span>+420 777 629 585
                   </a>
                 </div>
                 
-                <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                  <div style="width: 5px; min-width: 5px; height: 1px; background-color: #ffd301; margin-right: 10px;"></div>
+                <div style="margin-bottom: 12px;">
                   <a href="https://www.krystentrade.com" style="color: #ffffff; text-decoration: none; font-size: 14px;">
-                    www.krystentrade.com
+                    <span style="color: #ffd301; margin-right: 10px;">-</span>www.krystentrade.com
                   </a>
                 </div>
                 
-                <div style="display: flex; align-items: center;">
-                  <div style="width: 5px; min-width: 5px; height: 1px; background-color: #ffd301; margin-right: 10px;"></div>
+                <div>
                   <a href="mailto:info@krystentrade.com" style="color: #ffffff; text-decoration: none; font-size: 14px;">
-                    info@krystentrade.com
+                    <span style="color: #ffd301; margin-right: 10px;">-</span>info@krystentrade.com
                   </a>
                 </div>
               </div>
