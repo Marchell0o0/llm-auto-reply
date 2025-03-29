@@ -10,6 +10,10 @@ if os.path.exists(".env"):
     from dotenv import load_dotenv
     load_dotenv()
 
+logging.info("Environment variables:")
+for name, value in os.environ.items():
+    logging.info("{0}".format(name))
+
 
 def setup_logging(log_level):
     """Set up logging with a clean, minimal format."""
