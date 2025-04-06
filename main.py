@@ -5,7 +5,7 @@ import time
 import logging
 import argparse
 from email_bot import EmailBot
-
+import sys
 if os.path.exists(".env"):
     from dotenv import load_dotenv
     load_dotenv()
@@ -77,6 +77,7 @@ def main():
     except Exception as e:
         logging.error("Error in main function: %s", str(e),
                       exc_info=log_level == logging.DEBUG)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
